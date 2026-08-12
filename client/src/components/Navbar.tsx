@@ -1,21 +1,21 @@
-type NavbarProps = {
-  title: string
-}
-
-function Navbar({ title }: NavbarProps) {
+function Navbar() {
   return (
     <header className="navbar">
-      <div className="navbar-brand">
-        <div className="logo">M</div>
-        <h2>{title}</h2>
+      <div className="brand">
+        <div className="brand-icon">M</div>
+        <span>MemoraAI</span>
       </div>
 
-      <div className="navbar-actions">
+      <div className="navbar-right">
         <button className="icon-button">🔔</button>
-        <div className="avatar">P</div>
+
+        <div className="profile">
+          <div className="avatar">P</div>
+          <span>Prachi</span>
+        </div>
       </div>
     </header>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

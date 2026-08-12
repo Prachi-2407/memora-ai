@@ -1,33 +1,62 @@
-function Sidebar() {
+interface SidebarProps {
+  onNewNote: () => void;
+}
+
+function Sidebar({ onNewNote }: SidebarProps) {
   return (
     <aside className="sidebar">
-      <button className="new-note-button">
-        + New Note
-      </button>
+      <button
+      className="new-note-button"
+      onClick={onNewNote}
+      >
+  + New Note
+</button>
 
       <nav className="sidebar-nav">
-        <button className="sidebar-item active">
-          📝
-          <span>All Notes</span>
-        </button>
+        <a className="nav-item active">
+          🏠
+          <span>Dashboard</span>
+        </a>
 
-        <button className="sidebar-item">
+        <a className="nav-item">
+          📝
+          <span>Notes</span>
+        </a>
+
+        <a className="nav-item">
+          ✨
+          <span>AI Ask</span>
+        </a>
+
+        <a className="nav-item">
+          🏷️
+          <span>Tags</span>
+        </a>
+
+        <a className="nav-item">
           ⭐
           <span>Favorites</span>
-        </button>
+        </a>
 
-        <button className="sidebar-item">
+        <a className="nav-item">
           🗑️
           <span>Trash</span>
-        </button>
+        </a>
       </nav>
 
       <div className="sidebar-bottom">
-        <p>Memora AI</p>
-        <span>Your personal knowledge space.</span>
+        <a className="nav-item">
+          ⚙️
+          <span>Settings</span>
+        </a>
+
+        <a className="nav-item">
+          ↪️
+          <span>Logout</span>
+        </a>
       </div>
     </aside>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;
