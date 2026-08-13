@@ -1,59 +1,141 @@
 interface SidebarProps {
   onNewNote: () => void;
+  onFavorites: () => void;
+  onAllNotes: () => void;
+  onTrash: () => void;
+  onTags: () => void;
+  onAIAsk: () => void;
+
+  showingFavorites: boolean;
+  showingTrash: boolean;
+  showingTags: boolean;
+  showingAI: boolean;
 }
 
-function Sidebar({ onNewNote }: SidebarProps) {
+function Sidebar({
+  onNewNote,
+  onFavorites,
+  onAllNotes,
+  onTrash,
+  onTags,
+  onAIAsk,
+  showingFavorites,
+  showingTrash,
+  showingTags,
+  showingAI,
+}: SidebarProps) {
   return (
     <aside className="sidebar">
+      {/* LOGO */}
+
+      <div className="sidebar-logo">
+        <div className="logo-mark">M</div>
+
+        <div>
+          <h2>MemoraAI</h2>
+          <span>Your second brain</span>
+        </div>
+      </div>
+
+      {/* NEW NOTE */}
+
       <button
-      className="new-note-button"
-      onClick={onNewNote}
+        className="sidebar-new-note"
+        onClick={onNewNote}
       >
-  + New Note
-</button>
+        <span>＋</span>
+        New Note
+      </button>
+
+      {/* NAVIGATION */}
 
       <nav className="sidebar-nav">
-        <a className="nav-item active">
-          🏠
-          <span>Dashboard</span>
-        </a>
+        <button
+          className={
+            !showingFavorites &&
+            !showingTrash &&
+            !showingTags &&
+            !showingAI
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onAllNotes}
+        >
+          <span>🏠</span>
+          <span>All Notes</span>
+        </button>
 
-        <a className="nav-item">
-          📝
-          <span>Notes</span>
-        </a>
-
-        <a className="nav-item">
-          ✨
-          <span>AI Ask</span>
-        </a>
-
-        <a className="nav-item">
-          🏷️
-          <span>Tags</span>
-        </a>
-
-        <a className="nav-item">
-          ⭐
+        <button
+          className={
+            showingFavorites
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onFavorites}
+        >
+          <span>⭐</span>
           <span>Favorites</span>
-        </a>
+        </button>
 
-        <a className="nav-item">
-          🗑️
+        <button
+          className={
+            showingTags
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onTags}
+        >
+          <span>🏷️</span>
+          <span>Tags</span>
+        </button>
+
+        <button
+          className={
+            showingTrash
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onTrash}
+        >
+          <span>🗑️</span>
           <span>Trash</span>
-        </a>
+        </button>
+
+        {/* AI ASK */}
+
+        <button
+          className={
+            showingAI
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onAIAsk}
+        >
+          <span>✨</span>
+          <span>Ask MemoraAI</span>
+        </button>
       </nav>
 
-      <div className="sidebar-bottom">
-        <a className="nav-item">
-          ⚙️
-          <span>Settings</span>
-        </a>
+      {/* BOTTOM */}
 
-        <a className="nav-item">
-          ↪️
-          <span>Logout</span>
-        </a>
+      <div className="sidebar-bottom">
+        <div className="sidebar-divider" />
+
+        <button className="sidebar-item">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+
+        <div className="sidebar-profile">
+          <div className="profile-avatar">
+            P
+          </div>
+
+          <div>
+            <strong>Prachi</strong>
+            <span>Personal workspace</span>
+          </div>
+        </div>
       </div>
     </aside>
   );
