@@ -1,27 +1,28 @@
 import { useState } from "react";
-
-interface Note {
-  id: number;
-  title: string;
-  content: string;
-  tags: string;
-  favorite: boolean;
-}
+import type { Note } from "../App";
 
 interface NoteEditorProps {
+  editingNote: Note | null;
   onClose: () => void;
   onSave: (note: Note) => void;
-  editingNote?: Note;
 }
 
 function NoteEditor({
+  editingNote,
   onClose,
   onSave,
-  editingNote,
 }: NoteEditorProps) {
-  const [title, setTitle] = useState(editingNote?.title ?? "");
-  const [content, setContent] = useState(editingNote?.content ?? "");
-  const [tags, setTags] = useState(editingNote?.tags ?? "");
+  const [title, setTitle] = useState(
+    editingNote?.title ?? ""
+  );
+
+  const [content, setContent] = useState(
+    editingNote?.content ?? ""
+  );
+
+  const [tags, setTags] = useState(
+    editingNote?.tags ?? ""
+  );
 
   const handleSave = () => {
     if (!title.trim() || !content.trim()) {
@@ -29,27 +30,41 @@ function NoteEditor({
       return;
     }
 
-    onSave({
+    const note: Note = {
       id: editingNote?.id ?? Date.now(),
-      title,
-      content,
-      tags,
+      title: title.trim(),
+      content: content.trim(),
+      tags: tags.trim(),
       favorite: editingNote?.favorite ?? false,
-    });
+    };
+
+    onSave(note);
   };
 
+  const isEditing = Boolean(editingNote);
+
   return (
-    <div className="editor-overlay">
-      <div className="note-editor">
+    <div
+      className="editor-overlay"
+      onClick={onClose}
+    >
+      <div
+        className="note-editor"
+        onClick={(event) =>
+          event.stopPropagation()
+        }
+      >
         <div className="editor-header">
           <div>
             <h2>
-              {editingNote ? "Edit Note" : "Create New Note"}
+              {isEditing
+                ? "Edit Note"
+                : "Create New Note"}
             </h2>
 
             <p>
-              {editingNote
-                ? "Update your note."
+              {isEditing
+                ? "Update your note and keep your knowledge fresh."
                 : "Capture something worth remembering."}
             </p>
           </div>
@@ -57,6 +72,7 @@ function NoteEditor({
           <button
             className="close-button"
             onClick={onClose}
+            aria-label="Close editor"
           >
             ×
           </button>
@@ -73,6 +89,7 @@ function NoteEditor({
                 setTitle(event.target.value)
               }
               placeholder="Enter your note title..."
+              autoFocus
             />
           </label>
 
@@ -115,7 +132,9 @@ function NoteEditor({
             className="save-button"
             onClick={handleSave}
           >
-            {editingNote ? "Update Note" : "Save Note"}
+            {isEditing
+              ? "Update Note"
+              : "Save Note"}
           </button>
         </div>
       </div>

@@ -1,17 +1,36 @@
 function Navbar() {
   return (
     <header className="navbar">
-      <div className="brand">
-        <div className="brand-icon">M</div>
-        <span>MemoraAI</span>
+      <div className="navbar-left">
+        <div className="mobile-logo">
+          M
+        </div>
+
+        <div>
+          <h1>MemoraAI</h1>
+          <span>Knowledge, organized.</span>
+        </div>
       </div>
 
       <div className="navbar-right">
-        <button className="icon-button">🔔</button>
+        <button
+          className="navbar-icon-button"
+          aria-label="Notifications"
+        >
+          🔔
+        </button>
 
-        <div className="profile">
-          <div className="avatar">P</div>
-          <span>Prachi</span>
+        <div className="navbar-divider" />
+
+        <div className="navbar-user">
+          <div className="navbar-avatar">
+            P
+          </div>
+
+          <div className="navbar-user-info">
+            <strong>Prachi</strong>
+            <span>Personal</span>
+          </div>
         </div>
       </div>
     </header>
