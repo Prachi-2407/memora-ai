@@ -1,198 +1,287 @@
 import { useState } from "react";
+import { askAI } from "../api";
 import type { Note } from "../App";
 
 interface AIAssistantProps {
   notes: Note[];
+  onInteraction: () => void;
 }
 
-interface Message {
-  id: number;
-  role: "user" | "ai";
-  text: string;
-}
+function AIAssistant({
+  notes,
+  onInteraction,
+}: AIAssistantProps) {
+  const [question, setQuestion] =
+    useState("");
 
-function AIAssistant({ notes }: AIAssistantProps) {
-  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] =
+    useState("");
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      role: "ai",
-      text: "Hi! I'm MemoraAI. Ask me anything about your notes.",
-    },
-  ]);
+  const [sources, setSources] =
+    useState<
+      {
+        id: number;
+        title: string;
+      }[]
+    >([]);
 
-  const askQuestion = (text: string) => {
-    const trimmedQuestion = text.trim();
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const handleAsk = async () => {
+    const trimmedQuestion =
+      question.trim();
 
     if (!trimmedQuestion) {
       return;
     }
 
-    const userMessage: Message = {
-      id: Date.now(),
-      role: "user",
-      text: trimmedQuestion,
-    };
+    try {
+      setLoading(true);
+      setError("");
+      setAnswer("");
+      setSources([]);
 
-    setMessages((currentMessages) => [
-      ...currentMessages,
-      userMessage,
-    ]);
+      const result =
+        await askAI(
+          trimmedQuestion
+        );
 
-    setQuestion("");
-
-    const lowerQuestion =
-      trimmedQuestion.toLowerCase();
-
-    let answer =
-      "I couldn't find anything relevant in your notes yet.";
-
-    const matchingNotes = notes.filter((note) => {
-      const noteText =
-        `${note.title} ${note.content} ${note.tags}`.toLowerCase();
-
-      const words = lowerQuestion
-        .split(/\s+/)
-        .filter((word) => word.length > 2);
-
-      return words.some((word) =>
-        noteText.includes(word)
+      setAnswer(result.answer);
+      setSources(result.sources);
+      onInteraction();
+    } catch (error) {
+      console.error(
+        "AI request failed:",
+        error
       );
-    });
 
-    if (matchingNotes.length > 0) {
-      answer =
-        `I found ${matchingNotes.length} relevant ${
-          matchingNotes.length === 1
-            ? "note"
-            : "notes"
-        }:\n\n` +
-        matchingNotes
-          .map(
-            (note) =>
-              `📝 ${note.title}\n${note.content}`
-          )
-          .join("\n\n");
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unable to get an answer from MemoraAI."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    const aiMessage: Message = {
-      id: Date.now() + 1,
-      role: "ai",
-      text: answer,
-    };
-
-    setTimeout(() => {
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        aiMessage,
-      ]);
-    }, 500);
   };
 
-  const handleSubmit = (
-    event: React.FormEvent
+  const handleSuggestion = (
+    suggestion: string
   ) => {
-    event.preventDefault();
-    askQuestion(question);
+    setQuestion(suggestion);
   };
 
   return (
     <div className="ai-assistant">
-      <div className="ai-assistant-header">
-        <div className="ai-icon">
-          ✨
-        </div>
 
+      <div className="ai-header">
         <div>
-          <h2>Ask MemoraAI</h2>
+          <div className="ai-icon">
+            ✨
+          </div>
+
+          <h1>
+            Ask MemoraAI
+          </h1>
 
           <p>
-            Ask anything about your notes.
+            Ask questions about your
+            personal knowledge base.
           </p>
         </div>
       </div>
 
-      <div className="ai-messages">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={
-              message.role === "user"
-                ? "ai-message user-message"
-                : "ai-message"
+      <div className="ai-content">
+
+        <div className="ai-input-section">
+
+          <textarea
+            value={question}
+            onChange={(event) =>
+              setQuestion(
+                event.target.value
+              )
+            }
+            onKeyDown={(event) => {
+              if (
+                event.key === "Enter" &&
+                !event.shiftKey
+              ) {
+                event.preventDefault();
+                handleAsk();
+              }
+            }}
+            placeholder="Ask something about your notes..."
+            rows={4}
+          />
+
+          <button
+            onClick={handleAsk}
+            disabled={
+              loading ||
+              !question.trim()
             }
           >
-            <div className="message-avatar">
-              {message.role === "user"
-                ? "P"
-                : "✨"}
+            {loading
+              ? "Thinking..."
+              : "✨ Ask MemoraAI"}
+          </button>
+
+        </div>
+
+        {!answer &&
+          !loading &&
+          !error && (
+            <div className="ai-suggestions">
+
+              <h3>
+                Try asking:
+              </h3>
+
+              <button
+                onClick={() =>
+                  handleSuggestion(
+                    "What did I learn about React?"
+                  )
+                }
+              >
+                What did I learn about React?
+              </button>
+
+              <button
+                onClick={() =>
+                  handleSuggestion(
+                    "What did I learn about SQLite?"
+                  )
+                }
+              >
+                What did I learn about SQLite?
+              </button>
+
+              <button
+                onClick={() =>
+                  handleSuggestion(
+                    "What are the main topics in my notes?"
+                  )
+                }
+              >
+                What are the main topics
+                in my notes?
+              </button>
+
+            </div>
+          )}
+
+        {loading && (
+          <div className="ai-loading">
+
+            <div className="ai-spinner">
+              ✨
             </div>
 
-            <div className="message-content">
-              <span>
-                {message.role === "user"
-                  ? "You"
-                  : "MemoraAI"}
-              </span>
+            <p>
+              Searching your notes...
+            </p>
 
-              <p>
-                {message.text}
-              </p>
-            </div>
           </div>
-        ))}
+        )}
+
+        {error && (
+          <div className="ai-error">
+
+            <strong>
+              Something went wrong
+            </strong>
+
+            <p>
+              {error}
+            </p>
+
+          </div>
+        )}
+
+        {answer &&
+          !loading && (
+            <div className="ai-response">
+
+              <div className="ai-answer">
+
+                <div className="ai-answer-header">
+
+                  <span>
+                    🤖
+                  </span>
+
+                  <h2>
+                    MemoraAI
+                  </h2>
+
+                </div>
+
+                <p>
+                  {answer}
+                </p>
+
+              </div>
+
+              {sources.length > 0 && (
+                <div className="ai-sources">
+
+                  <h3>
+                    📚 Sources
+                  </h3>
+
+                  <div className="source-list">
+
+                    {sources.map(
+                      (source) => (
+                        <div
+                          className="source-item"
+                          key={source.id}
+                        >
+                          <span>
+                            📝
+                          </span>
+
+                          <span>
+                            {source.title}
+                          </span>
+                        </div>
+                      )
+                    )}
+
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+          )}
+
+        <div className="ai-note-count">
+
+          <span>
+            🧠
+          </span>
+
+          Searching across{" "}
+
+          <strong>
+            {notes.filter(
+              (note) => !note.deleted
+            ).length}
+          </strong>{" "}
+
+          active notes
+
+        </div>
+
       </div>
 
-      <form
-        className="ai-question-form"
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="text"
-          value={question}
-          onChange={(event) =>
-            setQuestion(event.target.value)
-          }
-          placeholder="Ask something about your notes..."
-        />
-
-        <button type="submit">
-          ➤
-        </button>
-      </form>
-
-      <div className="ai-suggestions">
-        <button
-          onClick={() =>
-            askQuestion(
-              "What did I learn about React?"
-            )
-          }
-        >
-          What did I learn about React?
-        </button>
-
-        <button
-          onClick={() =>
-            askQuestion(
-              "Show me my AI notes"
-            )
-          }
-        >
-          Show me my AI notes
-        </button>
-
-        <button
-          onClick={() =>
-            askQuestion(
-              "Summarize my notes"
-            )
-          }
-        >
-          Summarize my notes
-        </button>
-      </div>
     </div>
   );
 }

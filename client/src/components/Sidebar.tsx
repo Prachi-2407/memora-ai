@@ -5,11 +5,16 @@ interface SidebarProps {
   onTrash: () => void;
   onTags: () => void;
   onAIAsk: () => void;
+  onAIHistory: () => void;
+  onLogout: () => void;
 
   showingFavorites: boolean;
   showingTrash: boolean;
   showingTags: boolean;
   showingAI: boolean;
+  showingHistory: boolean;
+
+  userName: string;
 }
 
 function Sidebar({
@@ -19,51 +24,90 @@ function Sidebar({
   onTrash,
   onTags,
   onAIAsk,
+  onAIHistory,
+  onLogout,
+
   showingFavorites,
   showingTrash,
   showingTags,
   showingAI,
+  showingHistory,
+
+  userName,
 }: SidebarProps) {
+  const isAllNotes =
+    !showingFavorites &&
+    !showingTrash &&
+    !showingTags &&
+    !showingAI &&
+    !showingHistory;
+
+  const avatarLetter =
+    userName
+      .trim()
+      .charAt(0)
+      .toUpperCase() || "M";
+
   return (
     <aside className="sidebar">
-      {/* LOGO */}
+
+      {/* ================= LOGO ================= */}
 
       <div className="sidebar-logo">
-        <div className="logo-mark">M</div>
+
+        <div className="logo-mark">
+          M
+        </div>
 
         <div>
-          <h2>MemoraAI</h2>
-          <span>Your second brain</span>
+          <h2>
+            MemoraAI
+          </h2>
+
+          <span>
+            Your second brain
+          </span>
         </div>
+
       </div>
 
-      {/* NEW NOTE */}
+      {/* ================= NEW NOTE ================= */}
 
       <button
         className="sidebar-new-note"
         onClick={onNewNote}
       >
-        <span>＋</span>
+        <span>
+          ＋
+        </span>
+
         New Note
       </button>
 
-      {/* NAVIGATION */}
+      {/* ================= NAVIGATION ================= */}
 
       <nav className="sidebar-nav">
+
+        {/* ALL NOTES */}
+
         <button
           className={
-            !showingFavorites &&
-            !showingTrash &&
-            !showingTags &&
-            !showingAI
+            isAllNotes
               ? "sidebar-item active"
               : "sidebar-item"
           }
           onClick={onAllNotes}
         >
-          <span>🏠</span>
-          <span>All Notes</span>
+          <span>
+            🏠
+          </span>
+
+          <span>
+            All Notes
+          </span>
         </button>
+
+        {/* FAVORITES */}
 
         <button
           className={
@@ -73,9 +117,16 @@ function Sidebar({
           }
           onClick={onFavorites}
         >
-          <span>⭐</span>
-          <span>Favorites</span>
+          <span>
+            ⭐
+          </span>
+
+          <span>
+            Favorites
+          </span>
         </button>
+
+        {/* TAGS */}
 
         <button
           className={
@@ -85,23 +136,16 @@ function Sidebar({
           }
           onClick={onTags}
         >
-          <span>🏷️</span>
-          <span>Tags</span>
+          <span>
+            🏷️
+          </span>
+
+          <span>
+            Tags
+          </span>
         </button>
 
-        <button
-          className={
-            showingTrash
-              ? "sidebar-item active"
-              : "sidebar-item"
-          }
-          onClick={onTrash}
-        >
-          <span>🗑️</span>
-          <span>Trash</span>
-        </button>
-
-        {/* AI ASK */}
+        {/* AI ASSISTANT */}
 
         <button
           className={
@@ -111,32 +155,114 @@ function Sidebar({
           }
           onClick={onAIAsk}
         >
-          <span>✨</span>
-          <span>Ask MemoraAI</span>
+          <span>
+            ✨
+          </span>
+
+          <span>
+            Ask MemoraAI
+          </span>
         </button>
+
+        {/* AI HISTORY */}
+
+        <button
+          className={
+            showingHistory
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onAIHistory}
+        >
+          <span>
+            🕘
+          </span>
+
+          <span>
+            AI History
+          </span>
+        </button>
+
+        {/* TRASH */}
+
+        <button
+          className={
+            showingTrash
+              ? "sidebar-item active"
+              : "sidebar-item"
+          }
+          onClick={onTrash}
+        >
+          <span>
+            🗑️
+          </span>
+
+          <span>
+            Trash
+          </span>
+        </button>
+
       </nav>
 
-      {/* BOTTOM */}
+      {/* ================= BOTTOM ================= */}
 
       <div className="sidebar-bottom">
+
         <div className="sidebar-divider" />
 
-        <button className="sidebar-item">
-          <span>⚙️</span>
-          <span>Settings</span>
+        {/* SETTINGS */}
+
+        <button
+          className="sidebar-item"
+          type="button"
+        >
+          <span>
+            ⚙️
+          </span>
+
+          <span>
+            Settings
+          </span>
         </button>
 
+        {/* LOGOUT */}
+
+        <button
+          className="sidebar-item sidebar-logout"
+          type="button"
+          onClick={onLogout}
+        >
+          <span>
+            🚪
+          </span>
+
+          <span>
+            Logout
+          </span>
+        </button>
+
+        {/* PROFILE */}
+
         <div className="sidebar-profile">
+
           <div className="profile-avatar">
-            P
+            {avatarLetter}
           </div>
 
           <div>
-            <strong>Prachi</strong>
-            <span>Personal workspace</span>
+            <strong>
+              {userName}
+            </strong>
+
+            <span>
+              Personal workspace
+            </span>
           </div>
+
         </div>
+
       </div>
+
     </aside>
   );
 }

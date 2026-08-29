@@ -31,12 +31,13 @@ function NoteEditor({
     }
 
     const note: Note = {
-      id: editingNote?.id ?? Date.now(),
-      title: title.trim(),
-      content: content.trim(),
-      tags: tags.trim(),
-      favorite: editingNote?.favorite ?? false,
-    };
+    id: editingNote?.id ?? Date.now(),
+    title,
+    content,
+    tags,
+    favorite: editingNote?.favorite ?? false,
+    deleted: editingNote?.deleted ?? false,
+  };
 
     onSave(note);
   };
