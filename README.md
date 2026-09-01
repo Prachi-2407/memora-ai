@@ -13,7 +13,7 @@
 [![Render](https://img.shields.io/badge/Render-Backend-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
 
 <p align="center">
-  <a href="https://memora-ai.vercel.app">
+  <a href="[https://memora-ai.vercel.app](https://memora-ai-zeta.vercel.app)">
     <img src="https://img.shields.io/badge/🚀_Live_Demo-Visit_MemoraAI-7C3AED?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
   </a>
 </p>
