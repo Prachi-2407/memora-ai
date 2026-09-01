@@ -344,3 +344,33 @@ export async function getAIHistory(): Promise<
     AIInteraction[]
   >(response);
 }
+
+/* ================= AI ASSIST IN NOTE EDITOR ================= */
+
+export type AIAssistAction = "tags" | "summarize" | "polish" | "title";
+
+export interface AIAssistResponse {
+  result: string;
+  action: AIAssistAction;
+}
+
+export async function aiAssist(
+  action: AIAssistAction,
+  content: string,
+  title?: string
+): Promise<AIAssistResponse> {
+  const response = await fetch(`${API_URL}/ai/assist`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({
+      action,
+      content,
+      title,
+    }),
+  });
+
+  return handleResponse<AIAssistResponse>(response);
+}

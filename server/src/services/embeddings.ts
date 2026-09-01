@@ -17,6 +17,7 @@ const ai = new GoogleGenAI({
 });
 
 const EMBEDDING_MODEL =
+  process.env.GEMINI_EMBEDDING_MODEL ||
   "gemini-embedding-2";
 
 export async function createEmbedding(

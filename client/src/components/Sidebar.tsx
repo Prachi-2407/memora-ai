@@ -4,17 +4,19 @@ interface SidebarProps {
   onAllNotes: () => void;
   onTrash: () => void;
   onTags: () => void;
-  onAIAsk: () => void;
-  onAIHistory: () => void;
-  onLogout: () => void;
+
+  onAIAsk?: () => void;
+  onAIHistory?: () => void;
+  onLogout?: () => void;
 
   showingFavorites: boolean;
   showingTrash: boolean;
   showingTags: boolean;
-  showingAI: boolean;
-  showingHistory: boolean;
 
-  userName: string;
+  showingAI?: boolean;
+  showingHistory?: boolean;
+
+  userName?: string;
 }
 
 function Sidebar({
@@ -23,17 +25,19 @@ function Sidebar({
   onAllNotes,
   onTrash,
   onTags,
-  onAIAsk,
-  onAIHistory,
-  onLogout,
+
+  onAIAsk = () => {},
+  onAIHistory = () => {},
+  onLogout = () => {},
 
   showingFavorites,
   showingTrash,
   showingTags,
-  showingAI,
-  showingHistory,
 
-  userName,
+  showingAI = false,
+  showingHistory = false,
+
+  userName = "Prachi",
 }: SidebarProps) {
   const isAllNotes =
     !showingFavorites &&
@@ -42,16 +46,15 @@ function Sidebar({
     !showingAI &&
     !showingHistory;
 
+  const safeUserName = userName?.trim() || "Prachi";
+
   const avatarLetter =
-    userName
-      .trim()
-      .charAt(0)
-      .toUpperCase() || "M";
+    safeUserName.charAt(0).toUpperCase() || "P";
 
   return (
     <aside className="sidebar">
 
-      {/* ================= LOGO ================= */}
+      {/* LOGO */}
 
       <div className="sidebar-logo">
 
@@ -60,9 +63,7 @@ function Sidebar({
         </div>
 
         <div>
-          <h2>
-            MemoraAI
-          </h2>
+          <h2>MemoraAI</h2>
 
           <span>
             Your second brain
@@ -71,20 +72,19 @@ function Sidebar({
 
       </div>
 
-      {/* ================= NEW NOTE ================= */}
+
+      {/* NEW NOTE */}
 
       <button
         className="sidebar-new-note"
         onClick={onNewNote}
       >
-        <span>
-          ＋
-        </span>
-
+        <span>＋</span>
         New Note
       </button>
 
-      {/* ================= NAVIGATION ================= */}
+
+      {/* NAVIGATION */}
 
       <nav className="sidebar-nav">
 
@@ -98,14 +98,10 @@ function Sidebar({
           }
           onClick={onAllNotes}
         >
-          <span>
-            🏠
-          </span>
-
-          <span>
-            All Notes
-          </span>
+          <span>🏠</span>
+          <span>All Notes</span>
         </button>
+
 
         {/* FAVORITES */}
 
@@ -117,14 +113,10 @@ function Sidebar({
           }
           onClick={onFavorites}
         >
-          <span>
-            ⭐
-          </span>
-
-          <span>
-            Favorites
-          </span>
+          <span>⭐</span>
+          <span>Favorites</span>
         </button>
+
 
         {/* TAGS */}
 
@@ -136,14 +128,10 @@ function Sidebar({
           }
           onClick={onTags}
         >
-          <span>
-            🏷️
-          </span>
-
-          <span>
-            Tags
-          </span>
+          <span>🏷️</span>
+          <span>Tags</span>
         </button>
+
 
         {/* AI ASSISTANT */}
 
@@ -155,14 +143,10 @@ function Sidebar({
           }
           onClick={onAIAsk}
         >
-          <span>
-            ✨
-          </span>
-
-          <span>
-            Ask MemoraAI
-          </span>
+          <span>✨</span>
+          <span>Ask MemoraAI</span>
         </button>
+
 
         {/* AI HISTORY */}
 
@@ -174,14 +158,10 @@ function Sidebar({
           }
           onClick={onAIHistory}
         >
-          <span>
-            🕘
-          </span>
-
-          <span>
-            AI History
-          </span>
+          <span>🕘</span>
+          <span>AI History</span>
         </button>
+
 
         {/* TRASH */}
 
@@ -193,37 +173,18 @@ function Sidebar({
           }
           onClick={onTrash}
         >
-          <span>
-            🗑️
-          </span>
-
-          <span>
-            Trash
-          </span>
+          <span>🗑️</span>
+          <span>Trash</span>
         </button>
 
       </nav>
 
-      {/* ================= BOTTOM ================= */}
+
+      {/* BOTTOM */}
 
       <div className="sidebar-bottom">
 
         <div className="sidebar-divider" />
-
-        {/* SETTINGS */}
-
-        <button
-          className="sidebar-item"
-          type="button"
-        >
-          <span>
-            ⚙️
-          </span>
-
-          <span>
-            Settings
-          </span>
-        </button>
 
         {/* LOGOUT */}
 
@@ -232,14 +193,10 @@ function Sidebar({
           type="button"
           onClick={onLogout}
         >
-          <span>
-            🚪
-          </span>
-
-          <span>
-            Logout
-          </span>
+          <span>🚪</span>
+          <span>Logout</span>
         </button>
+
 
         {/* PROFILE */}
 
@@ -251,7 +208,7 @@ function Sidebar({
 
           <div>
             <strong>
-              {userName}
+              {safeUserName}
             </strong>
 
             <span>

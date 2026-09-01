@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Note } from "../App";
+import { aiAssist, type AIAssistAction } from "../api";
 
 interface NoteEditorProps {
   editingNote: Note | null;
@@ -24,6 +25,87 @@ function NoteEditor({
     editingNote?.tags ?? ""
   );
 
+  const [aiLoadingAction, setAiLoadingAction] =
+    useState<AIAssistAction | null>(null);
+
+  const [aiFeedback, setAiFeedback] =
+    useState<string | null>(null);
+
+  const showFeedback = (msg: string) => {
+    setAiFeedback(msg);
+    setTimeout(() => {
+      setAiFeedback(null);
+    }, 4000);
+  };
+
+  const handleAIAssist = async (action: AIAssistAction) => {
+    if (!content.trim() && !title.trim()) {
+      showFeedback("⚠️ Write some content or title first.");
+      return;
+    }
+
+    try {
+      setAiLoadingAction(action);
+      setAiFeedback(null);
+
+      const response = await aiAssist(action, content, title);
+      const result = response.result?.trim();
+
+      if (!result) {
+        showFeedback("⚠️ No result generated.");
+        return;
+      }
+
+      switch (action) {
+        case "tags": {
+          const newTags = result
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean);
+
+          const existingTags = tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean);
+
+          const merged = Array.from(
+            new Set([...existingTags, ...newTags])
+          ).join(", ");
+
+          setTags(merged);
+          showFeedback("✨ Tags generated and updated!");
+          break;
+        }
+
+        case "title": {
+          setTitle(result);
+          showFeedback("✨ Title suggested!");
+          break;
+        }
+
+        case "summarize": {
+          const formattedSummary = `\n\n### Summary\n${result}`;
+          setContent((prev) => `${prev.trim()}${formattedSummary}`);
+          showFeedback("✨ Summary appended to note!");
+          break;
+        }
+
+        case "polish": {
+          setContent(result);
+          showFeedback("✨ Note polished and formatted!");
+          break;
+        }
+      }
+    } catch (err) {
+      console.error("AI assist error:", err);
+      showFeedback(
+        err instanceof Error ? `⚠️ ${err.message}` : "⚠️ AI Assist failed."
+      );
+    } finally {
+      setAiLoadingAction(null);
+    }
+  };
+
   const handleSave = () => {
     if (!title.trim() || !content.trim()) {
       alert("Please enter a title and content.");
@@ -31,13 +113,13 @@ function NoteEditor({
     }
 
     const note: Note = {
-    id: editingNote?.id ?? Date.now(),
-    title,
-    content,
-    tags,
-    favorite: editingNote?.favorite ?? false,
-    deleted: editingNote?.deleted ?? false,
-  };
+      id: editingNote?.id ?? Date.now(),
+      title,
+      content,
+      tags,
+      favorite: editingNote?.favorite ?? false,
+      deleted: editingNote?.deleted ?? false,
+    };
 
     onSave(note);
   };
@@ -77,6 +159,57 @@ function NoteEditor({
           >
             ×
           </button>
+        </div>
+
+        {/* AI ASSIST TOOLBAR */}
+        <div className="editor-ai-toolbar">
+          <div className="editor-ai-actions">
+            <span className="editor-ai-label">✨ AI Assist:</span>
+
+            <button
+              type="button"
+              className="editor-ai-btn"
+              onClick={() => handleAIAssist("tags")}
+              disabled={aiLoadingAction !== null || (!content.trim() && !title.trim())}
+              title="Automatically generate topic tags"
+            >
+              {aiLoadingAction === "tags" ? "⏳ Generating..." : "🏷️ Auto-Tag"}
+            </button>
+
+            <button
+              type="button"
+              className="editor-ai-btn"
+              onClick={() => handleAIAssist("title")}
+              disabled={aiLoadingAction !== null || !content.trim()}
+              title="Suggest a title from note content"
+            >
+              {aiLoadingAction === "title" ? "⏳ Suggesting..." : "💡 Suggest Title"}
+            </button>
+
+            <button
+              type="button"
+              className="editor-ai-btn"
+              onClick={() => handleAIAssist("summarize")}
+              disabled={aiLoadingAction !== null || !content.trim()}
+              title="Append a concise summary"
+            >
+              {aiLoadingAction === "summarize" ? "⏳ Summarizing..." : "📝 Summarize"}
+            </button>
+
+            <button
+              type="button"
+              className="editor-ai-btn"
+              onClick={() => handleAIAssist("polish")}
+              disabled={aiLoadingAction !== null || !content.trim()}
+              title="Polish grammar, clarity, and formatting"
+            >
+              {aiLoadingAction === "polish" ? "⏳ Polishing..." : "✍️ Polish"}
+            </button>
+          </div>
+
+          {aiFeedback && (
+            <div className="editor-ai-feedback">{aiFeedback}</div>
+          )}
         </div>
 
         <div className="editor-form">
