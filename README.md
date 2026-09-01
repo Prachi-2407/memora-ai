@@ -396,10 +396,17 @@ CREATE TABLE IF NOT EXISTS note_embeddings (
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is developed for learning purposes and personal portfolio use
 
 ---
 
 <div align="center">
   Made with ❤️ by <b>Prachi</b>
 </div>
+
+<br />
+
+⭐ If you found MemoraAI interesting, consider giving the repository a star!
+
+</div>
+
