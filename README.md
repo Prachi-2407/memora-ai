@@ -13,6 +13,12 @@
 [![Render](https://img.shields.io/badge/Render-Backend-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
 
 <p align="center">
+  <a href="https://memora-ai.vercel.app">
+    <img src="https://img.shields.io/badge/🚀_Live_Demo-Visit_MemoraAI-7C3AED?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
+</p>
+
+<p align="center">
   <b>Capture thoughts, organize notes with smart tags, and converse with your knowledge base using semantic vector search powered by Google Gemini.</b>
 </p>
 
@@ -197,11 +203,11 @@ CREATE TABLE IF NOT EXISTS note_embeddings (
 
 ## 🌐 Production Deployment
 
-| Service | Hosting Platform | Config Details |
+| Service | Hosting Platform | Live URL |
 | :--- | :--- | :--- |
-| **Frontend** | [Vercel](https://vercel.com) | Root: `client` \| Preset: `Vite` \| Env: `VITE_API_URL=https://<your-render-url>/api` |
-| **Backend** | [Render](https://render.com) | Root: `server` \| Build: `npm install && npm run build` \| Start: `npm start` |
-| **Database** | [Neon](https://neon.tech) | Serverless PostgreSQL with SSL connection |
+| **Frontend Web App** | [Vercel](https://vercel.com) | [memora-ai.vercel.app](https://YOUR-APP.vercel.app) |
+| **Backend API** | [Render](https://render.com) | [memora-ai-whmx.onrender.com](https://memora-ai-whmx.onrender.com/api/health) |
+| **Database** | [Neon](https://neon.tech) | PostgreSQL (Serverless) |
 
 ---
 
