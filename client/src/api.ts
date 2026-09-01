@@ -1,8 +1,26 @@
 import type { Note } from "./App";
 
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "http://127.0.0.1:5001/api";
+const envUrl = (import.meta.env.VITE_API_URL || "")
+  .trim()
+  .replace(/\/+$/, "");
+
+const defaultProductionUrl =
+  "https://memora-ai-whmx.onrender.com/api";
+
+const isLocalhost =
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+const rawApiUrl =
+  envUrl ||
+  (isLocalhost
+    ? "http://127.0.0.1:5001/api"
+    : defaultProductionUrl);
+
+const API_URL = rawApiUrl.endsWith("/api")
+  ? rawApiUrl
+  : `${rawApiUrl}/api`;
 
 /* ================= AUTH TYPES ================= */
 
