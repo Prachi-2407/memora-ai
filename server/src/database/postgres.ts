@@ -12,8 +12,15 @@ if (!connectionString) {
   );
 }
 
+const isCloudDb =
+  connectionString.includes("sslmode=require") ||
+  connectionString.includes("neon.tech") ||
+  connectionString.includes("supabase") ||
+  process.env.NODE_ENV === "production";
+
 const pool = new Pool({
   connectionString,
+  ssl: isCloudDb ? { rejectUnauthorized: false } : undefined,
 });
 
 pool.on("error", (error) => {
