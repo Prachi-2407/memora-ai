@@ -361,34 +361,19 @@ http://localhost:5173
 
 ## 📸 Screenshots
 
-Add your application screenshots here.
+<p align="center">
+  <img width="48%" src="https://github.com/user-attachments/assets/0e0ab2f3-8c04-41d1-ae2f-52b2f0609d63" alt="MemoraAI Dashboard" />
+  <img width="48%" src="https://github.com/user-attachments/assets/3350395f-567a-453b-80ef-2465bb5e8d48" alt="MemoraAI Dark Mode" />
+</p>
 
-### Login Page
+<p align="center">
+  <img width="48%" src="https://github.com/user-attachments/assets/711c02b2-d6a7-411e-9df7-e6ba98273b07" alt="MemoraAI AI Assistant" />
+  <img width="48%" src="https://github.com/user-attachments/assets/1a4882a0-cb56-4d61-bbde-6ce53fc87855" alt="MemoraAI Note Editor" />
+</p>
 
-![MemoraAI Login Page](<img width="1387" height="902" alt="Screenshot 2026-09-23 at 11 12 54 PM" src="https://github.com/user-attachments/assets/9bebf169-0b6d-43fe-9741-ec8a0a6887bc" />
-)
-
-
-### Dashboard
-
-![MemoraAI Dashboard](<img width="1384" height="904" alt="Screenshot 2026-09-23 at 11 11 01 PM" src="https://github.com/user-attachments/assets/0e0ab2f3-8c04-41d1-ae2f-52b2f0609d63" />
-)
-
-### AI Assistant
-
-![MemoraAI AI Assistant](<img width="1384" height="903" alt="Screenshot 2026-09-23 at 11 11 25 PM" src="https://github.com/user-attachments/assets/711c02b2-d6a7-411e-9df7-e6ba98273b07" />
-)
-
-### Note Editor
-
-![MemoraAI Note Editor](<img width="1385" height="902" alt="Screenshot 2026-09-23 at 11 12 29 PM" src="https://github.com/user-attachments/assets/1a4882a0-cb56-4d61-bbde-6ce53fc87855" />
-)
-
-### Dark Mode
-
-![MemoraAI Dark Mode](<img width="1384" height="901" alt="Screenshot 2026-09-23 at 11 12 46 PM" src="https://github.com/user-attachments/assets/3350395f-567a-453b-80ef-2465bb5e8d48" />
-)
-
+<p align="center">
+  <img width="40%" src="https://github.com/user-attachments/assets/9bebf169-0b6d-43fe-9741-ec8a0a6887bc" alt="MemoraAI Login Page" />
+</p>
 ---
 
 ## 🌐 Deployment
