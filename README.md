@@ -1,53 +1,88 @@
-<div align="center">
-
 # 🧠 MemoraAI
-### *Your Personal AI-Powered Knowledge Base & Second Brain*
 
-[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://neon.tech/)
-[![Google Gemini](https://img.shields.io/badge/Google_Gemini-3.6_Flash-8E75C2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
-[![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
-[![Render](https://img.shields.io/badge/Render-Backend-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
+MemoraAI is a full-stack AI-powered knowledge management application that helps users create, organize, search, and interact with their personal notes. It uses **semantic vector search and Retrieval-Augmented Generation (RAG)** to provide AI-powered answers based on the user's stored knowledge.
 
-<p align="center">
-  <a href="https://memora-ai-zeta.vercel.app" target="_blank">
-    <img src="https://img.shields.io/badge/🚀_Live_Demo-Visit_MemoraAI-7C3AED?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
-  </a>
-</p>
+🚀 **Live Demo:** https://memora-ai-zeta.vercel.app
 
-<p align="center">
-  <b>Capture thoughts, organize notes with smart tags, and converse with your knowledge base using semantic vector search powered by Google Gemini.</b>
-</p>
+📂 **GitHub Repository:** https://github.com/Prachi-2407/memora-ai
 
 ---
 
-</div>
+## ✨ Features
 
-## 🌟 Highlights & Features
+### 🤖 AI Knowledge Assistant
 
-### 🤖 1. Retrieval-Augmented Generation (RAG)
-* **Ask MemoraAI**: Converse with your personal notes using Google Gemini.
-* **Semantic Vector Search**: Calculates cosine similarity on note embeddings to retrieve only the most relevant notes for grounded answers.
-* **Source Citations**: Displays which notes were referenced to answer your question.
-* **AI History**: Logs all your past queries and answers in PostgreSQL.
+- Ask questions about your personal notes
+- Semantic search using vector embeddings
+- Retrieval-Augmented Generation (RAG) for context-aware responses
+- Source citations showing the notes used for an answer
+- AI interaction history stored in PostgreSQL
 
-### ✨ 2. Intelligent Note Editor AI Assist
-* **🏷️ Auto-Tagging**: Analyzes note title and body to suggest 3–5 relevant topic tags.
-* **💡 Title Generator**: Automatically crafts punchy, descriptive titles from your content.
-* **📝 Summarizer**: Appends a clean bulleted summary/TL;DR to your note.
-* **✍️ Writing Polisher**: Cleans up grammar, typos, and organizes text with structured Markdown.
+### 📝 AI Note Assistant
 
-### 📝 3. Effortless Note Management
-* **Instant Search & Filter**: Real-time keyword search and tag-based categorization.
-* **Favorites & Trash**: Star important notes or move items to trash with one-click restore and permanent delete options.
-* **Notifications Center**: Real-time alerts for note actions, edits, and deletions.
+- Automatic tag generation
+- AI-powered title generation
+- Note summarization with TL;DR
+- Writing improvement and grammar correction
+- Markdown formatting assistance
 
-### 🌙 4. Modern UI & Persistent Dark Mode
-* **Sleek Aesthetic**: Minimalist card design with fluid animations and responsive mobile layouts.
-* **Persistent Themes**: Auto-saves your Light/Dark theme preference in `localStorage`.
+### 📚 Note Management
+
+- Create and edit notes
+- Delete and restore notes
+- Permanently delete notes
+- Mark notes as favorites
+- Search notes by title and content
+- Filter notes using tags
+
+### 🔐 User Authentication
+
+- User registration and login
+- JWT-based authentication
+- Password hashing using bcryptjs
+- Protected API routes
+- User-specific notes and AI interactions
+
+### 🎨 User Interface
+
+- Responsive design
+- Light and dark themes
+- Persistent theme preference using `localStorage`
+- Clean card-based note interface
+- Mobile-friendly layouts
+- Notification center for note activity
+
+---
+
+## 🧠 Retrieval-Augmented Generation
+
+MemoraAI uses a Retrieval-Augmented Generation (RAG) pipeline to generate responses based on the user's own notes.
+
+```text
+User Question
+      ↓
+Generate Query Embedding
+      ↓
+Semantic Similarity Search
+      ↓
+Retrieve Relevant Notes
+      ↓
+Send Context to Gemini
+      ↓
+Generate AI Response
+      ↓
+Display Answer + Sources
+```
+
+### How It Works
+
+1. The user's question is converted into a vector embedding.
+2. The embedding is compared with stored note embeddings.
+3. The most relevant notes are retrieved using semantic similarity.
+4. The retrieved notes are provided to the Gemini model as context.
+5. Gemini generates a response based on the retrieved information.
+6. Relevant source notes are displayed with the response.
+7. The question and generated answer are stored in PostgreSQL.
 
 ---
 
@@ -55,47 +90,153 @@
 
 ```mermaid
 graph TD
-    A[React 19 + TypeScript Client] -->|REST API / JSON| B[Express.js Server]
+    A[React + TypeScript Client] -->|REST API / JSON| B[Express.js Server]
+
     B -->|JWT Authentication| C[(PostgreSQL Database)]
-    B -->|Embeddings & Generation| D[Google Gemini API]
-    
-    subgraph PostgreSQL Tables
-        C --> T1[users]
-        C --> T2[notes]
-        C --> T3[note_embeddings]
-        C --> T4[ai_interactions]
-    end
-    
-    subgraph Gemini AI Engine
-        D --> M1[gemini-embedding-2]
-        D --> M2[gemini-3.6-flash]
-    end
+
+    B -->|Generate Embeddings| D[Gemini Embedding Model]
+
+    B -->|Generate Responses| E[Gemini Generative Model]
+
+    C --> T1[Users]
+    C --> T2[Notes]
+    C --> T3[Note Embeddings]
+    C --> T4[AI Interactions]
+
+    D --> F[Semantic Search]
+    F --> B
+
+    E --> B
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 19, TypeScript, Vite, Custom CSS3 Variables |
-| **Backend** | Node.js, Express, TypeScript, `@google/genai`, `pg`, `bcryptjs`, `jsonwebtoken`, `cors` |
-| **Database** | PostgreSQL (Neon / Supabase / Local) |
-| **AI Models** | `gemini-3.6-flash` (Generative Q&A), `gemini-embedding-2` (Vector Embeddings) |
-| **Deployment** | Vercel (Frontend Client), Render (Backend API), Neon (Cloud PostgreSQL) |
+### Frontend
+
+- React 19
+- TypeScript
+- Vite
+- HTML5
+- CSS3
+- JavaScript
+
+### Backend
+
+- Node.js
+- Express.js
+- TypeScript
+- REST API
+
+### Database
+
+- PostgreSQL
+- Neon PostgreSQL
+- `pg`
+
+### Authentication
+
+- JSON Web Tokens (JWT)
+- bcryptjs
+
+### AI
+
+- Google Gemini
+- Gemini Embeddings
+- Retrieval-Augmented Generation (RAG)
+- Cosine Similarity
+
+### Other Tools & Libraries
+
+- Google GenAI SDK
+- CORS
+- Dotenv
+- Vercel
+- Render
 
 ---
 
-## 🚀 Getting Started Locally
+## 📂 Project Structure
 
-### 1. Prerequisites
-* **Node.js** (v18 or higher)
-* **PostgreSQL** instance (local or free cloud database on [Neon.tech](https://neon.tech))
-* **Google Gemini API Key** (from [Google AI Studio](https://aistudio.google.com/))
+```text
+memora-ai/
+│
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   └── ...
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── server/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   ├── services/
+│   │   ├── database/
+│   │   └── ...
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── package.json
+└── README.md
+```
 
 ---
 
-### 2. Clone the Repository
+## 🗄️ Database Structure
+
+MemoraAI uses PostgreSQL with four primary tables.
+
+### `users`
+
+Stores user account and authentication information.
+
+### `notes`
+
+Stores note content, tags, favorites, deletion status, and timestamps.
+
+### `note_embeddings`
+
+Stores vector embeddings associated with notes for semantic search.
+
+### `ai_interactions`
+
+Stores questions asked by users and AI-generated responses.
+
+### Database Relationship
+
+```text
+users
+ │
+ ├─────────────── notes
+ │                    │
+ │                    └── note_embeddings
+ │
+ └─────────────── ai_interactions
+```
+
+---
+
+## 🚀 Installation
+
+### Prerequisites
+
+Make sure the following are installed:
+
+- Node.js 18 or higher
+- PostgreSQL
+- Git
+- Google Gemini API key
+
+### Clone the Repository
+
 ```bash
 git clone https://github.com/Prachi-2407/memora-ai.git
 cd memora-ai
@@ -103,310 +244,217 @@ cd memora-ai
 
 ---
 
-### 3. Backend Setup
+## Backend Setup
+
+Navigate to the server directory:
 
 ```bash
 cd server
 npm install
 ```
 
-Create a `.env` file in `server/`:
+Create a `.env` file inside the `server` directory:
+
 ```env
 PORT=5001
-DATABASE_URL=postgresql://user:password@localhost:5432/memoraai
-JWT_SECRET=your_super_secret_jwt_key
-GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-3.6-flash
-GEMINI_EMBEDDING_MODEL=gemini-embedding-2
-```
 
-Run database migrations:
-```bash
-# Execute schema in your database
-psql -d memoraai -f src/database/schema.sql
-```
+DATABASE_URL=your_postgresql_connection_string
 
-Start the backend:
-```bash
-npm run dev
+JWT_SECRET=your_jwt_secret
+
+GEMINI_API_KEY=your_gemini_api_key
+
+GEMINI_MODEL=your_gemini_model
+
+GEMINI_EMBEDDING_MODEL=your_embedding_model
 ```
-> Server runs on `http://localhost:5001`
 
 ---
 
-### 4. Frontend Setup
+## Database Setup
+
+Create a PostgreSQL database named `memoraai`.
+
+Run the database schema:
 
 ```bash
-cd ../client
+psql -d memoraai -f src/database/schema.sql
+```
+
+Make sure your `DATABASE_URL` points to the correct PostgreSQL database.
+
+---
+
+## Start the Backend
+
+```bash
+npm run dev
+```
+
+Backend runs on:
+
+```text
+http://localhost:5001
+```
+
+---
+
+## Frontend Setup
+
+Open a new terminal and navigate to the client directory:
+
+```bash
+cd client
 npm install
 ```
 
-Create a `.env` file in `client/`:
+Create a `.env` file inside the `client` directory:
+
 ```env
 VITE_API_URL=http://127.0.0.1:5001/api
 ```
 
-Start the frontend:
+---
+
+## Start the Frontend
+
 ```bash
 npm run dev
 ```
-> App runs on `http://localhost:5173`
 
----
+Frontend runs on:
 
-## 🗄️ Database Schema
+```text
+http://localhost:5173
+```
 
-```sql
--- 1. Users Table
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
+Open the application in your browser:
 
--- 2. Notes Table
-CREATE TABLE IF NOT EXISTS notes (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  title TEXT NOT NULL,
-  content TEXT NOT NULL,
-  tags TEXT DEFAULT '',
-  favorite BOOLEAN DEFAULT FALSE,
-  deleted BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
--- 3. AI Interactions History
-CREATE TABLE IF NOT EXISTS ai_interactions (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  question TEXT NOT NULL,
-  answer TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
--- 4. Note Vector Embeddings
-CREATE TABLE IF NOT EXISTS note_embeddings (
-  id SERIAL PRIMARY KEY,
-  note_id INTEGER NOT NULL UNIQUE REFERENCES notes(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  embedding JSONB NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
+```text
+http://localhost:5173
 ```
 
 ---
 
-## 🌐 Production Deployment
+## 🔑 Environment Variables
 
-| Service | Hosting Platform | Live URL / Config |
-| :--- | :--- | :--- |
-| **Frontend Web App** | [Vercel](https://vercel.com) | [memora-ai-zeta.vercel.app](https://memora-ai-zeta.vercel.app) |
-| **Backend API** | [Render](https://render.com) | [memora-ai-whmx.onrender.com](https://memora-ai-whmx.onrender.com/api/health) |
-| **Database** | [Neon](https://neon.tech) | Cloud PostgreSQL (Serverless) |
+### Backend
+
+| Variable | Description |
+|---|---|
+| `PORT` | Backend server port |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` | Secret used for JWT authentication |
+| `GEMINI_API_KEY` | Google Gemini API key |
+| `GEMINI_MODEL` | Gemini generative model |
+| `GEMINI_EMBEDDING_MODEL` | Gemini embedding model |
+
+### Frontend
+
+| Variable | Description |
+|---|---|
+| `VITE_API_URL` | Backend API URL |
+
+> **Important:** Never commit `.env` files or expose API keys in the repository.
+
+---
+
+## 📸 Screenshots
+
+Add your application screenshots here.
+
+### Dashboard
+
+![MemoraAI Dashboard](YOUR_SCREENSHOT_URL)
+
+### AI Assistant
+
+![MemoraAI AI Assistant](YOUR_SCREENSHOT_URL)
+
+### Note Editor
+
+![MemoraAI Note Editor](YOUR_SCREENSHOT_URL)
+
+### Dark Mode
+
+![MemoraAI Dark Mode](YOUR_SCREENSHOT_URL)
+
+---
+
+## 🌐 Deployment
+
+MemoraAI is deployed using multiple cloud services.
+
+| Service | Platform | Purpose |
+|---|---|---|
+| Frontend | Vercel | React application |
+| Backend | Render | Express API |
+| Database | Neon | PostgreSQL database |
+| AI Services | Google Gemini | AI generation and embeddings |
+
+### Live Application
+
+🚀 https://memora-ai-zeta.vercel.app
+
+### Backend API Health Check
+
+🔗 https://memora-ai-whmx.onrender.com/api/health
+
+---
+
+## 📚 Key Learnings
+
+- Built a full-stack application using React, TypeScript, Node.js, and PostgreSQL.
+- Implemented JWT-based authentication and protected API routes.
+- Designed RESTful APIs using Express.js.
+- Integrated Google Gemini for generative AI features.
+- Implemented vector embeddings for semantic search.
+- Built a Retrieval-Augmented Generation (RAG) workflow.
+- Stored and retrieved AI interaction history using PostgreSQL.
+- Implemented AI-assisted note organization and writing tools.
+- Deployed the frontend, backend, and database using cloud platforms.
+- Managed application secrets using environment variables.
+
+---
+
+## 🚀 Future Enhancements
+
+- [ ] Advanced semantic search
+- [ ] PDF and document upload
+- [ ] PostgreSQL `pgvector` integration
+- [ ] Streaming AI responses
+- [ ] Note version history
+- [ ] AI-generated knowledge graphs
+- [ ] Collaborative workspaces
+- [ ] RAG evaluation and monitoring
+- [ ] Automated testing
+- [ ] CI/CD pipeline
+- [ ] Improved search and filtering
+- [ ] File-based knowledge ingestion
+
+---
+
+## 🔒 Security Considerations
+
+- Store API keys in environment variables.
+- Never commit `.env` files.
+- Use a strong and unique JWT secret.
+- Validate incoming API requests.
+- Restrict CORS to trusted origins in production.
+- Use HTTPS for production deployments.
+- Apply appropriate database access controls.
+
+---
+
+## 👩‍💻 Author
+
+**Prachi**
+
+- GitHub: https://github.com/Prachi-2407
+- Repository: https://github.com/Prachi-2407/memora-ai
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
-
----
-
-<div align="center">
-  Made with ❤️ by <b>Prachi</b>
-</div>* **💡 Title Generator**: Automatically crafts punchy, descriptive titles from your content.
-* **📝 Summarizer**: Appends a clean bulleted summary/TL;DR to your note.
-* **✍️ Writing Polisher**: Cleans up grammar, typos, and organizes text with structured Markdown.
-
-### 📝 3. Effortless Note Management
-* **Instant Search & Filter**: Real-time keyword search and tag-based categorization.
-* **Favorites & Trash**: Star important notes or move items to trash with one-click restore and permanent delete options.
-* **Notifications Center**: Real-time alerts for note actions, edits, and deletions.
-
-### 🌙 4. Modern UI & Persistent Dark Mode
-* **Sleek Aesthetic**: Minimalist card design with fluid animations and responsive mobile layouts.
-* **Persistent Themes**: Auto-saves your Light/Dark theme preference in `localStorage`.
-
----
-
-## 🏗️ System Architecture
-
-```mermaid
-graph TD
-    A[React 19 + TypeScript Client] -->|REST API / JSON| B[Express.js Server]
-    B -->|JWT Authentication| C[(PostgreSQL Database)]
-    B -->|Embeddings & Generation| D[Google Gemini API]
-    
-    subgraph PostgreSQL Tables
-        C --> T1[users]
-        C --> T2[notes]
-        C --> T3[note_embeddings]
-        C --> T4[ai_interactions]
-    end
-    
-    subgraph Gemini AI Engine
-        D --> M1[gemini-embedding-2]
-        D --> M2[gemini-3.6-flash]
-    end
-```
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 19, TypeScript, Vite, Custom CSS3 Variables |
-| **Backend** | Node.js, Express, TypeScript, `@google/genai`, `pg`, `bcryptjs`, `jsonwebtoken`, `cors` |
-| **Database** | PostgreSQL (Neon / Supabase / Local) |
-| **AI Models** | `gemini-3.6-flash` (Generative Q&A), `gemini-embedding-2` (Vector Embeddings) |
-| **Deployment** | Vercel (Frontend Client), Render (Backend API), Neon (Cloud PostgreSQL) |
-
----
-
-## 🚀 Getting Started Locally
-
-### 1. Prerequisites
-* **Node.js** (v18 or higher)
-* **PostgreSQL** instance (local or free cloud database on [Neon.tech](https://neon.tech))
-* **Google Gemini API Key** (from [Google AI Studio](https://aistudio.google.com/))
-
----
-
-### 2. Clone the Repository
-```bash
-git clone https://github.com/Prachi-2407/memora-ai.git
-cd memora-ai
-```
-
----
-
-### 3. Backend Setup
-
-```bash
-cd server
-npm install
-```
-
-Create a `.env` file in `server/`:
-```env
-PORT=5001
-DATABASE_URL=postgresql://user:password@localhost:5432/memoraai
-JWT_SECRET=your_super_secret_jwt_key
-GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-3.6-flash
-GEMINI_EMBEDDING_MODEL=gemini-embedding-2
-```
-
-Run database migrations:
-```bash
-# Execute schema in your database
-psql -d memoraai -f src/database/schema.sql
-```
-
-Start the backend:
-```bash
-npm run dev
-```
-> Server runs on `http://localhost:5001`
-
----
-
-### 4. Frontend Setup
-
-```bash
-cd ../client
-npm install
-```
-
-Create a `.env` file in `client/`:
-```env
-VITE_API_URL=http://127.0.0.1:5001/api
-```
-
-Start the frontend:
-```bash
-npm run dev
-```
-> App runs on `http://localhost:5173`
-
----
-
-## 🗄️ Database Schema
-
-```sql
--- 1. Users Table
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
--- 2. Notes Table
-CREATE TABLE IF NOT EXISTS notes (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  title TEXT NOT NULL,
-  content TEXT NOT NULL,
-  tags TEXT DEFAULT '',
-  favorite BOOLEAN DEFAULT FALSE,
-  deleted BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
--- 3. AI Interactions History
-CREATE TABLE IF NOT EXISTS ai_interactions (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  question TEXT NOT NULL,
-  answer TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
--- 4. Note Vector Embeddings
-CREATE TABLE IF NOT EXISTS note_embeddings (
-  id SERIAL PRIMARY KEY,
-  note_id INTEGER NOT NULL UNIQUE REFERENCES notes(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  embedding JSONB NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-```
-
----
-
-## 🌐 Production Deployment
-
-| Service | Hosting Platform | Live URL |
-| :--- | :--- | :--- |
-| **Frontend Web App** | [Vercel](https://vercel.com) | [memora-ai.vercel.app](https://YOUR-APP.vercel.app) |
-| **Backend API** | [Render](https://render.com) | [memora-ai-whmx.onrender.com](https://memora-ai-whmx.onrender.com/api/health) |
-| **Database** | [Neon](https://neon.tech) | PostgreSQL (Serverless) |
-
----
-
-## 📄 License
-
-This project is developed for learning purposes and personal portfolio use
-
----
-
-<div align="center">
-  Made with ❤️ by <b>Prachi</b>
-</div>
-
-<br />
-
-⭐ If you found MemoraAI interesting, consider giving the repository a star!
-
-</div>
-
+This project is developed for **learning purposes and personal portfolio use**.
